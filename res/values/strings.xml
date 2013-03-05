@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Asteroides</string>
+    <string name="titulo_principal">Asteroides</string>
+    <string name="menu_settings">Settings</string>
+    <string name="btnJugarText">Jugar</string>
+    <string name="btnConfigurarText">Configurar</string>
+    <string name="btnAcercaDeText">Acerca de</string>
+    <string name="btnSalirText">Salir</string>
+    <string name="btnPuntuacionesText">Puntuaciones</string>
+    <string name="activityLabelAcercaDe">Acerca de &#8230;</string>
+    <string name="activityLabelPreferencias">Preferencias</string>
+    <string name="activityLabelPuntuaciones">Puntuaciones</string>
+    <string name="puntuacionesLabel">Puntuaciones</string>
+    <string name="noPuntuacionesLabel">No hay puntuaciones</string>
+
+</resources>
