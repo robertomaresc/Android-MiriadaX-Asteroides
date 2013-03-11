@@ -12,6 +12,7 @@
     <string name="activityLabelAcercaDe">About &#8230;</string>
     <string name="activityLabelPreferencias">Preferences</string>
     <string name="activityLabelPuntuaciones">Scores</string>
+    <string name="activityLabelJuego">Play</string>
     <string name="puntuacionesLabel">Scores</string>
     <string name="noPuntuacionesLabel">No scores</string>
 

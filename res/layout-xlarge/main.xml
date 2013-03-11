@@ -1,7 +1,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
     android:background="@android:color/background_dark"
     android:gravity="center"
     android:orientation="vertical"
@@ -9,7 +9,7 @@
     tools:context=".Asteroides" >
 
     <TextView
-        android:layout_width="match_parent"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
         android:gravity="center"
@@ -18,35 +18,35 @@
 
     <Button
         android:id="@+id/btnJugar"
-        android:layout_width="match_parent"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="@string/btnJugarText"
         android:textSize="25sp" />
 
     <Button
         android:id="@+id/btnConfigurar"
-        android:layout_width="match_parent"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="@string/btnConfigurarText"
         android:textSize="25sp" />
 
     <Button
         android:id="@+id/btnAcercaDe"
-        android:layout_width="match_parent"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="@string/btnAcercaDeText"
         android:textSize="25sp" />
 
     <Button
         android:id="@+id/btnPuntuaciones"
-        android:layout_width="match_parent"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="@string/btnPuntuacionesText"
         android:textSize="25sp" />
 
     <Button
         android:id="@+id/btnSalir"
-        android:layout_width="match_parent"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="@string/btnSalirText"
         android:textSize="25sp" />

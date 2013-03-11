@@ -10,13 +10,19 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 
+/**
+ * Pantalla principal de la aplicacion Asteroides
+ * 
+ * @author robertome
+ * 
+ */
 public class Asteroides extends Activity {
-
 	public static AlmacenPuntuaciones almacen = new AlmacenPuntuacionesArrayImpl();
 	private Button btnAcercaDe;
 	private Button btnSalir;
 	private Button btnConfigurar;
 	private Button btnPuntuaciones;
+	private Button btnJugar;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +32,7 @@ public class Asteroides extends Activity {
 		btnConfigurar = (Button) findViewById(R.id.btnConfigurar);
 		btnSalir = (Button) findViewById(R.id.btnSalir);
 		btnPuntuaciones = (Button) findViewById(R.id.btnPuntuaciones);
-
+		btnJugar = (Button) findViewById(R.id.btnJugar);
 		/*-
 		 * Para cualquier version del API
 		 * Solo a partir del API 16 se puede asignar en re/layout/...xml un metodo 
@@ -38,7 +44,6 @@ public class Asteroides extends Activity {
 				lanzarAcercaDe(null);
 			}
 		});
-
 		/*
 		 * Configurar
 		 */
@@ -48,7 +53,6 @@ public class Asteroides extends Activity {
 				lanzarPreferencias(null);
 			}
 		});
-
 		/*
 		 * Puntuaciones
 		 */
@@ -58,7 +62,15 @@ public class Asteroides extends Activity {
 				lanzarPuntuaciones(null);
 			}
 		});
-
+		/*
+		 * Jugar
+		 */
+		btnJugar.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				lanzarJuego(null);
+			}
+		});
 		/*
 		 * Finalizar aplicacion
 		 */
@@ -79,7 +91,7 @@ public class Asteroides extends Activity {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.menu, menu);
 		return true;
-		/** true -> el menú ya está visible */
+		/** true -> el menï¿½ ya estï¿½ visible */
 	}
 
 	/**
@@ -111,6 +123,11 @@ public class Asteroides extends Activity {
 
 	public void lanzarPuntuaciones(View view) {
 		Intent i = new Intent(this, Puntuaciones.class);
+		startActivity(i);
+	}
+
+	public void lanzarJuego(View view) {
+		Intent i = new Intent(this, Juego.class);
 		startActivity(i);
 	}
 }
