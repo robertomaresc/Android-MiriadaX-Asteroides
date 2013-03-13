@@ -10,6 +10,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
 
 /**
@@ -42,6 +43,14 @@ public class VistaJuego extends View {
 	private static int PERIODO_PROCESO = 50;
 	// Cuando se realizó el último proceso
 	private long ultimoProceso = 0;
+	/*
+	 * Variables para los eventos onTouchEvent
+	 */
+	// Ultima posicion X
+	private float mX = 0;
+	// Ultima posicion Y
+	private float mY = 0;
+	private boolean disparo = false;
 
 	public VistaJuego(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -153,6 +162,43 @@ public class VistaJuego extends View {
 		for (Grafico asteroide : listaAsteroides) {
 			asteroide.incrementaPos(retardo);
 		}
+	}
+
+	@Override
+	public boolean onTouchEvent(MotionEvent event) {
+		super.onTouchEvent(event);
+		float x = event.getX();
+		float y = event.getY();
+		switch (event.getAction()) {
+		case MotionEvent.ACTION_DOWN:
+			disparo = true;
+			break;
+		case MotionEvent.ACTION_MOVE:
+			float dx = Math.abs(x - mX);
+			float dy = Math.abs(y - mY);
+			if (dy < 6 && dx > 6) {
+				giroNave = Math.round((x - mX) / 2);
+				disparo = false;
+			} else if (dx < 6 && dy > 6) {
+				aceleracionNave = Math.round((mY - y) / 25);
+				disparo = false;
+			}
+			break;
+		case MotionEvent.ACTION_UP:
+			giroNave = 0;
+			/*
+			 * Modifica el código anterior para que no sea posible decelerar.
+			 */
+			// aceleracionNave = 0;
+			if (disparo) {
+				// TODO:
+				// ActivaMisil();
+			}
+			break;
+		}
+		mX = x;
+		mY = y;
+		return true;
 	}
 
 	/**
