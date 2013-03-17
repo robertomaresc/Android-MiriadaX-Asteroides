@@ -349,6 +349,10 @@ public class VistaJuego extends View implements SensorEventListener {
 		return (int) valor;
 	}
 
+	public ThreadJuego getThread() {
+		return thread;
+	}
+
 	/**
 	 * Clase interna para un hilo que actualiza los graficos
 	 * 
@@ -356,10 +360,44 @@ public class VistaJuego extends View implements SensorEventListener {
 	 * 
 	 */
 	class ThreadJuego extends Thread {
+		private boolean pausa, corriendo;
+
+		public synchronized void pausar() {
+			pausa = true;
+		}
+
+		public synchronized void reanudar() {
+			pausa = false;
+			notify();
+		}
+
+		public void detener() {
+			corriendo = false;
+			if (pausa) {
+				reanudar();
+			}
+		}
+
 		@Override
 		public void run() {
-			while (true) {
+			corriendo = true;
+			while (corriendo) {
 				actualizaFisica();
+				synchronized (this) {
+					/*
+					 * Se comprueba si se ha activado pausa. En tal caso, se
+					 * entra en un bucle donde ponemos en espera elthread
+					 * llamando al método wait(). Este quedará bloqueado hasta
+					 * que se llame a notify(). Esta acción se realizará desde
+					 * el método reanudar()
+					 */
+					while (pausa) {
+						try {
+							wait();
+						} catch (Exception e) {
+						}
+					}
+				}
 			}
 		}
 	}
