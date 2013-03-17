@@ -2,6 +2,7 @@ package com.example.asteroides;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -24,6 +25,7 @@ public class Asteroides extends Activity {
 	private Button btnConfigurar;
 	private Button btnPuntuaciones;
 	private Button btnJugar;
+	private MediaPlayer mp;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +84,7 @@ public class Asteroides extends Activity {
 				finish();
 			}
 		});
+		mp = MediaPlayer.create(this, R.raw.audio);
 	}
 
 	@Override
@@ -94,18 +97,27 @@ public class Asteroides extends Activity {
 	protected void onResume() {
 		super.onResume();
 		Toast.makeText(this, "onResume", Toast.LENGTH_SHORT).show();
+		mp.start();
 	}
 
 	@Override
 	protected void onPause() {
 		Toast.makeText(this, "onPause", Toast.LENGTH_SHORT).show();
 		super.onPause();
+		/*
+		 * Cuando la actividad deje de estar activa el audio deje de escucharse
+		 */
+		// mp.pause();
 	}
 
 	@Override
 	protected void onStop() {
 		Toast.makeText(this, "onStop", Toast.LENGTH_SHORT).show();
 		super.onStop();
+		/*
+		 * Cuando la actividad deje de estar visible el audio deje de escucharse
+		 */
+		mp.pause();
 	}
 
 	@Override

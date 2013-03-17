@@ -73,7 +73,7 @@ public class VistaJuego extends View implements SensorEventListener {
 	/*
 	 * Variable para movimiento con sensores. Evento "onSensorChanged"
 	 */
-	private static final int TIPO_SENSOR_UTIL_GIRO = /* Sensor.TYPE_ORIENTATION */Sensor.TYPE_ACCELEROMETER;
+	public static final int TIPO_SENSOR_UTIL_GIRO = /* Sensor.TYPE_ORIENTATION */Sensor.TYPE_ACCELEROMETER;
 	private boolean hayValorInicial = false;
 	private float valorInicial;
 
@@ -104,11 +104,6 @@ public class VistaJuego extends View implements SensorEventListener {
 		 */
 		Drawable drawableMisil = crearMisil(TipoGrafico.BITMAP);
 		misil = new Grafico(this, drawableMisil);
-		/*
-		 * SENSORES: Registramos VistaJuego como sensorEventListener para el
-		 * giro de la nave
-		 */
-		registrarSensorParaGiro(this, TIPO_SENSOR_UTIL_GIRO);
 	}
 
 	private Drawable crearMisil(TipoGrafico graficoType) {
@@ -127,7 +122,7 @@ public class VistaJuego extends View implements SensorEventListener {
 		return drawableMisil;
 	}
 
-	private void registrarSensorParaGiro(
+	public void registrarSensorParaGiro(
 			SensorEventListener sensorEventListener, int sensorType) {
 		SensorManager mSensorManager = (SensorManager) getContext()
 				.getSystemService(Context.SENSOR_SERVICE);
@@ -137,6 +132,13 @@ public class VistaJuego extends View implements SensorEventListener {
 			mSensorManager.registerListener(sensorEventListener,
 					orientationSensor, SensorManager.SENSOR_DELAY_GAME);
 		}
+	}
+
+	public void desregistrarSensorParaGiro(
+			SensorEventListener sensorEventListener) {
+		SensorManager mSensorManager = (SensorManager) getContext()
+				.getSystemService(Context.SENSOR_SERVICE);
+		mSensorManager.unregisterListener(sensorEventListener);
 	}
 
 	@Override
