@@ -18,21 +18,21 @@ class Grafico {
 	public static final int MAX_VELOCIDAD = 20;
 	// Imagen que dibujaremos
 	private final Drawable drawable;
-	// Donde dibujamos el gráfico (usada en view.ivalidate)
+	// Donde dibujamos el grï¿½fico (usada en view.ivalidate)
 	private final View view;
-	// Posición
+	// Posiciï¿½n
 	private double posX;
 	private double posY;
 	// Velocidad desplazamiento
 	private double incX;
 	private double incY;
-	// Ángulo y velocidad rotación
+	// ï¿½ngulo y velocidad rotaciï¿½n
 	private int angulo;
 	private int rotacion;
 	// Dimensiones de la imagen
 	private final int ancho;
 	private final int alto;
-	// Para determinar colisión
+	// Para determinar colisiï¿½n
 	private final int radioColision;
 
 	public Grafico(View view, Drawable drawable) {
@@ -58,7 +58,7 @@ class Grafico {
 
 	public void incrementaPos(double factor) {
 		posX += incX * factor;
-		// Si salimos de la pantalla, corregimos posición
+		// Si salimos de la pantalla, corregimos posiciï¿½n
 		if (posX < -ancho / 2) {
 			posX = view.getWidth() - ancho / 2;
 		}
@@ -72,7 +72,7 @@ class Grafico {
 		if (posY > view.getHeight() - alto / 2) {
 			posY = -alto / 2;
 		}
-		// Actualizamos ángulo
+		// Actualizamos angulo
 		angulo += rotacion * factor;
 	}
 

@@ -8,7 +8,15 @@ import java.util.List;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint.Style;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.RectShape;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -18,7 +26,11 @@ import android.view.View;
  * @author robertome
  * 
  */
-public class VistaJuego extends View {
+public class VistaJuego extends View implements SensorEventListener {
+	private enum TipoGrafico {
+		VECTORIAL, BITMAP
+	};
+
 	/*
 	 * ASTEROIDES
 	 */
@@ -35,6 +47,13 @@ public class VistaJuego extends View {
 	private static final int PASO_GIRO_NAVE = 5;
 	private static final float PASO_ACELERACION_NAVE = 0.5f;
 	/*
+	 * MISIL
+	 */
+	private static final int PASO_VELOCIDAD_MISIL = 12;
+	private final Grafico misil;
+	private boolean misilActivo = false;
+	private int tiempoMisil;
+	/*
 	 * THREAD Y TIEMPO
 	 */
 	// Thread encargado de procesar el juego
@@ -44,13 +63,19 @@ public class VistaJuego extends View {
 	// Cuando se realizó el último proceso
 	private long ultimoProceso = 0;
 	/*
-	 * Variables para los eventos onTouchEvent
+	 * Variables para los eventos "onTouchEvent"
 	 */
-	// Ultima posicion X
+	// Ultima posicion X de la nave
 	private float mX = 0;
-	// Ultima posicion Y
+	// Ultima posicion Y de la nave
 	private float mY = 0;
 	private boolean disparo = false;
+	/*
+	 * Variable para movimiento con sensores. Evento "onSensorChanged"
+	 */
+	private static final int TIPO_SENSOR_UTIL_GIRO = /* Sensor.TYPE_ORIENTATION */Sensor.TYPE_ACCELEROMETER;
+	private boolean hayValorInicial = false;
+	private float valorInicial;
 
 	public VistaJuego(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -73,6 +98,44 @@ public class VistaJuego extends View {
 			asteroide.setAngulo((int) (Math.random() * 360));
 			asteroide.setRotacion((int) (Math.random() * 8 - 4));
 			listaAsteroides.add(asteroide);
+		}
+		/*
+		 * Inicializamos misil
+		 */
+		Drawable drawableMisil = crearMisil(TipoGrafico.BITMAP);
+		misil = new Grafico(this, drawableMisil);
+		/*
+		 * SENSORES: Registramos VistaJuego como sensorEventListener para el
+		 * giro de la nave
+		 */
+		registrarSensorParaGiro(this, TIPO_SENSOR_UTIL_GIRO);
+	}
+
+	private Drawable crearMisil(TipoGrafico graficoType) {
+		Drawable drawableMisil = null;
+		if (TipoGrafico.VECTORIAL.equals(graficoType)) {
+			ShapeDrawable dMisil = new ShapeDrawable(new RectShape());
+			dMisil.getPaint().setColor(Color.WHITE);
+			dMisil.getPaint().setStyle(Style.STROKE);
+			dMisil.setIntrinsicWidth(15);
+			dMisil.setIntrinsicHeight(3);
+			drawableMisil = dMisil;
+		} else if (TipoGrafico.BITMAP.equals(graficoType)) {
+			drawableMisil = getContext().getResources().getDrawable(
+					R.drawable.misil1);
+		}
+		return drawableMisil;
+	}
+
+	private void registrarSensorParaGiro(
+			SensorEventListener sensorEventListener, int sensorType) {
+		SensorManager mSensorManager = (SensorManager) getContext()
+				.getSystemService(Context.SENSOR_SERVICE);
+		List<Sensor> listSensors = mSensorManager.getSensorList(sensorType);
+		if (!listSensors.isEmpty()) {
+			Sensor orientationSensor = listSensors.get(0);
+			mSensorManager.registerListener(sensorEventListener,
+					orientationSensor, SensorManager.SENSOR_DELAY_GAME);
 		}
 	}
 
@@ -124,6 +187,12 @@ public class VistaJuego extends View {
 		for (Grafico asteroide : listaAsteroides) {
 			asteroide.dibujaGrafico(canvas);
 		}
+		/*
+		 * Dibujamos misil
+		 */
+		if (misilActivo) {
+			misil.dibujaGrafico(canvas);
+		}
 	}
 
 	protected synchronized void actualizaFisica() {
@@ -162,6 +231,23 @@ public class VistaJuego extends View {
 		for (Grafico asteroide : listaAsteroides) {
 			asteroide.incrementaPos(retardo);
 		}
+		/*
+		 * Actualizamos posición de misil
+		 */
+		if (misilActivo) {
+			misil.incrementaPos(retardo);
+			tiempoMisil -= retardo;
+			if (tiempoMisil < 0) {
+				misilActivo = false;
+			} else {
+				for (int i = 0; i < listaAsteroides.size(); i++) {
+					if (misil.verificaColision(listaAsteroides.get(i))) {
+						destruyeAsteroide(i);
+						break;
+					}
+				}
+			}
+		}
 	}
 
 	@Override
@@ -191,8 +277,7 @@ public class VistaJuego extends View {
 			 */
 			// aceleracionNave = 0;
 			if (disparo) {
-				// TODO:
-				// ActivaMisil();
+				activaMisil();
 			}
 			break;
 		}
@@ -201,8 +286,71 @@ public class VistaJuego extends View {
 		return true;
 	}
 
+	private void destruyeAsteroide(int i) {
+		listaAsteroides.remove(i);
+		misilActivo = false;
+	}
+
+	private void activaMisil() {
+		misil.setPosX(nave.getPosX() + nave.getAncho() / 2 - misil.getAncho()
+				/ 2);
+		misil.setPosY(nave.getPosY() + nave.getAlto() / 2 - misil.getAlto() / 2);
+		misil.setAngulo(nave.getAngulo());
+		/*
+		 * Para descomponerla en sus componentes X e Y utilizamos el coseno y el
+		 * seno.
+		 */
+		misil.setIncX(Math.cos(Math.toRadians(misil.getAngulo()))
+				* PASO_VELOCIDAD_MISIL);
+		misil.setIncY(Math.sin(Math.toRadians(misil.getAngulo()))
+				* PASO_VELOCIDAD_MISIL);
+		/*
+		 * Dada la naturaleza del espacio del juego (lo que sale por un lado
+		 * aparece por el otro) si disparáramos un misil este podría acabar
+		 * chocando contra la nave. Para solucionarlo vamos a dar un tiempo de
+		 * vida al misil para impedir que pueda llegar de nuevo a la nave
+		 * (tiempoMisil). Para obtener este tiempo nos quedamos con el mínimo
+		 * entre el ancho dividido la velocidad en X y el alto dividido entre la
+		 * velocidad en Y. Luego le restamos una constante. Terminamos activando
+		 * el misil.
+		 */
+		tiempoMisil = (int) Math.min(
+				this.getWidth() / Math.abs(misil.getIncX()), this.getHeight()
+						/ Math.abs(misil.getIncY())) - 2;
+		misilActivo = true;
+	}
+
+	@Override
+	public void onAccuracyChanged(Sensor sensor, int accuracy) {
+	}
+
+	@Override
+	public void onSensorChanged(SensorEvent event) {
+		giroNave = (TIPO_SENSOR_UTIL_GIRO == Sensor.TYPE_ORIENTATION) ? calcularGiroPorSensorORIENTATION(event)
+				: calcularGiroPorSensorACCELOROMETER(event);
+	}
+
+	private int calcularGiroPorSensorORIENTATION(SensorEvent event) {
+		float valor = event.values[1];
+		if (!hayValorInicial) {
+			valorInicial = valor;
+			hayValorInicial = true;
+		}
+		return (int) (valor - valorInicial) / 3;
+	}
+
+	private int calcularGiroPorSensorACCELOROMETER(SensorEvent event) {
+		/*-
+		 * Jugamos con el valor de la aceleracion en el EjeY 
+		 * (estamos con el telefono en apaisado)
+		 * Los valores del acelerometro estaran entre -9.8 y +9.8
+		 */
+		float valor = event.values[1];
+		return (int) valor;
+	}
+
 	/**
-	 * Clase interna para actualizar los graficos
+	 * Clase interna para un hilo que actualiza los graficos
 	 * 
 	 * @author robertome
 	 * 
