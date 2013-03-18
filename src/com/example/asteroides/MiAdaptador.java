@@ -21,7 +21,6 @@ import android.widget.TextView;
  * 
  */
 public class MiAdaptador extends BaseAdapter {
-
 	private final Activity actividad;
 	private final List<String> lista;
 

@@ -1,14 +1,15 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/degradado"
     android:gravity="center"
     android:orientation="vertical"
     android:padding="30dp"
     tools:context=".Asteroides" >
 
     <TextView
-        android:layout_width="match_parent"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
         android:gravity="center"
@@ -16,7 +17,7 @@
         android:textSize="25sp" />
 
     <TableLayout
-        android:layout_width="match_parent"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:stretchColumns="*" >
 
@@ -24,13 +25,13 @@
 
             <Button
                 android:id="@+id/btnJugar"
-                android:layout_width="match_parent"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/btnJugarText" />
 
             <Button
                 android:id="@+id/btnConfigurar"
-                android:layout_width="match_parent"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/btnConfigurarText" />
         </TableRow>
@@ -39,14 +40,14 @@
 
             <Button
                 android:id="@+id/btnAcercaDe"
-                android:layout_width="match_parent"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/btnAcercaDeText" />
 
             <Button
                 android:id="@+id/btnPuntuaciones"
                 style="@style/textoAsteroides.botones"
-                android:layout_width="match_parent"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/btnPuntuacionesText" />
         </TableRow>
@@ -55,7 +56,7 @@
 
             <Button
                 android:id="@+id/btnSalir"
-                android:layout_width="match_parent"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/btnSalirText" />
         </TableRow>

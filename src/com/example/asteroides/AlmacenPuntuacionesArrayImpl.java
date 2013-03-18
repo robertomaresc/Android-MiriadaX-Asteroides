@@ -19,7 +19,7 @@ public class AlmacenPuntuacionesArrayImpl implements AlmacenPuntuaciones {
 		puntuaciones = new ArrayList<String>();
 		puntuaciones.add("123000 Pepito Domingez");
 		puntuaciones.add("111000 Pedro Martinez");
-		puntuaciones.add("011000 Paco Pérez");
+		puntuaciones.add("011000 Paco PÃ©rez");
 	}
 
 	@Override

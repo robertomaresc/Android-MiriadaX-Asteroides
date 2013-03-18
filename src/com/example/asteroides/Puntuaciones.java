@@ -8,8 +8,13 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+/**
+ * Pantalla "Puntuaciones"
+ * 
+ * @author robertome
+ * 
+ */
 public class Puntuaciones extends ListActivity {
-
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -26,7 +31,7 @@ public class Puntuaciones extends ListActivity {
 		Object o = getListAdapter().getItem(position);
 		Toast.makeText(
 				this,
-				"Selección: " + Integer.toString(position) + " - "
+				"SelecciÃ³n: " + Integer.toString(position) + " - "
 						+ o.toString(), Toast.LENGTH_LONG).show();
 	}
 
@@ -53,5 +58,4 @@ public class Puntuaciones extends ListActivity {
 	private ListAdapter crearMiAdaptador() {
 		return new MiAdaptador(this, Asteroides.almacen.listaPuntuaciones(10));
 	}
-
 }
