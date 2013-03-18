@@ -31,7 +31,7 @@ public class Puntuaciones extends ListActivity {
 		Object o = getListAdapter().getItem(position);
 		Toast.makeText(
 				this,
-				"Selecci�n: " + Integer.toString(position) + " - "
+				"Selección: " + Integer.toString(position) + " - "
 						+ o.toString(), Toast.LENGTH_LONG).show();
 	}
 
