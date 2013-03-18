@@ -20,6 +20,7 @@ import android.widget.Toast;
  */
 public class Asteroides extends Activity {
 	public static AlmacenPuntuaciones almacen = new AlmacenPuntuacionesArrayImpl();
+	private static final String VAR_ESTADO__POSICION_MUSICA = "posicionMusica";
 	private Button btnAcercaDe;
 	private Button btnSalir;
 	private Button btnConfigurar;
@@ -113,11 +114,11 @@ public class Asteroides extends Activity {
 	@Override
 	protected void onStop() {
 		Toast.makeText(this, "onStop", Toast.LENGTH_SHORT).show();
-		super.onStop();
 		/*
 		 * Cuando la actividad deje de estar visible el audio deje de escucharse
 		 */
 		mp.pause();
+		super.onStop();
 	}
 
 	@Override
@@ -159,6 +160,37 @@ public class Asteroides extends Activity {
 		}
 		return true;
 		/** true -> consumimos el item, no se propaga */
+	}
+
+	/**
+	 * Cuando se ejecuta una actividad sensible a la inclinación del telefono,
+	 * la actividad es destruida y vuelta a construir con las nuevas dimensiones
+	 * de pantalla y por lo tanto se llama de nuevo al método onCreate(). Antes
+	 * de que la actividad sea destruida puede resultar fundamental guardar su
+	 * estado.
+	 * <p>
+	 * En este caso guardamos la posicion de la musica
+	 */
+	@Override
+	protected void onSaveInstanceState(Bundle estadoGuardado) {
+		super.onSaveInstanceState(estadoGuardado);
+		if (mp != null) {
+			int pos = mp.getCurrentPosition();
+			estadoGuardado.putInt(VAR_ESTADO__POSICION_MUSICA, pos);
+		}
+	}
+
+	/**
+	 * Recuperamos la posicion en la que se encontraba la musica cuando se
+	 * destruyo la aplicacion
+	 */
+	@Override
+	protected void onRestoreInstanceState(Bundle estadoGuardado) {
+		super.onRestoreInstanceState(estadoGuardado);
+		if (estadoGuardado != null && mp != null) {
+			int pos = estadoGuardado.getInt(VAR_ESTADO__POSICION_MUSICA);
+			mp.seekTo(pos);
+		}
 	}
 
 	private void lanzarAcercaDe(View view) {
