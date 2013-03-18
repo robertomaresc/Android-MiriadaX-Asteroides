@@ -18,13 +18,14 @@ public final class R {
         public static final int asteroide1=0x7f020000;
         public static final int asteroide2=0x7f020001;
         public static final int asteroide3=0x7f020002;
-        public static final int fondo=0x7f020003;
-        public static final int ic_launcher=0x7f020004;
-        public static final int misil1=0x7f020005;
-        public static final int misil2=0x7f020006;
-        public static final int misil3=0x7f020007;
-        public static final int nave=0x7f020008;
-        public static final int nave_fuego=0x7f020009;
+        public static final int degradado=0x7f020003;
+        public static final int fondo=0x7f020004;
+        public static final int ic_launcher=0x7f020005;
+        public static final int misil1=0x7f020006;
+        public static final int misil2=0x7f020007;
+        public static final int misil3=0x7f020008;
+        public static final int nave=0x7f020009;
+        public static final int nave_fuego=0x7f02000a;
     }
     public static final class id {
         public static final int TextView01=0x7f0a0000;
