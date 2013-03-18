@@ -141,8 +141,8 @@ public class Asteroides extends Activity {
 		super.onCreateOptionsMenu(menu);
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.menu, menu);
+		/* true -> el menu ya esta visible */
 		return true;
-		/** true -> el men� ya est� visible */
 	}
 
 	/**
@@ -158,8 +158,8 @@ public class Asteroides extends Activity {
 			lanzarPreferencias(null);
 			break;
 		}
+		/* true -> consumimos el item, no se propaga */
 		return true;
-		/** true -> consumimos el item, no se propaga */
 	}
 
 	/**

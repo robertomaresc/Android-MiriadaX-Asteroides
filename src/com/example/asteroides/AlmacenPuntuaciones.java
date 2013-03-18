@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Interfaz para el almacenamiento de puntuaciones
  * 
- * @author Administrador
+ * @author robertome
  * 
  */
 public interface AlmacenPuntuaciones {
