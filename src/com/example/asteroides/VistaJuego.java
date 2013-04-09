@@ -6,7 +6,9 @@ package com.example.asteroides;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint.Style;
@@ -17,6 +19,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.os.Bundle;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -27,6 +30,8 @@ import android.view.View;
  * 
  */
 public class VistaJuego extends View implements SensorEventListener {
+	private int puntuacion = 0;
+
 	private enum TipoGrafico {
 		VECTORIAL, BITMAP
 	};
@@ -76,6 +81,11 @@ public class VistaJuego extends View implements SensorEventListener {
 	public static final int TIPO_SENSOR_UTIL_GIRO = /* Sensor.TYPE_ORIENTATION */Sensor.TYPE_ACCELEROMETER;
 	private boolean hayValorInicial = false;
 	private float valorInicial;
+	/*
+	 * Para pasar puntuacion a Actividad Asteroides sin que VistaJuego sea una
+	 * actividad
+	 */
+	private Activity activityPadre;
 
 	public VistaJuego(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -250,6 +260,14 @@ public class VistaJuego extends View implements SensorEventListener {
 				}
 			}
 		}
+		/*
+		 * Si la nave colisiono con un asteroide abandonamos el juego
+		 */
+		for (Grafico asteroide : listaAsteroides) {
+			if (asteroide.verificaColision(nave)) {
+				salir();
+			}
+		}
 	}
 
 	@Override
@@ -291,6 +309,10 @@ public class VistaJuego extends View implements SensorEventListener {
 	private void destruyeAsteroide(int i) {
 		listaAsteroides.remove(i);
 		misilActivo = false;
+		puntuacion += 1000;
+		if (listaAsteroides.isEmpty()) {
+			salir();
+		}
 	}
 
 	private void activaMisil() {
@@ -353,6 +375,19 @@ public class VistaJuego extends View implements SensorEventListener {
 
 	public ThreadJuego getThread() {
 		return thread;
+	}
+
+	public void setActivityPadre(Activity padre) {
+		this.activityPadre = padre;
+	}
+
+	private void salir() {
+		Bundle bundle = new Bundle();
+		bundle.putInt("puntuacion", puntuacion);
+		Intent intent = new Intent();
+		intent.putExtras(bundle);
+		activityPadre.setResult(Activity.RESULT_OK, intent);
+		activityPadre.finish();
 	}
 
 	/**

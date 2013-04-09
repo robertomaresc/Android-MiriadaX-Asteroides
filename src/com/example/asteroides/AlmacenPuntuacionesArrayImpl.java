@@ -4,6 +4,7 @@
 package com.example.asteroides;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Implementacion de la interfaz {@link AlmacenPuntuaciones} utilizando un
@@ -13,7 +14,7 @@ import java.util.ArrayList;
  * 
  */
 public class AlmacenPuntuacionesArrayImpl implements AlmacenPuntuaciones {
-	private final ArrayList<String> puntuaciones;
+	private final List<String> puntuaciones;
 
 	public AlmacenPuntuacionesArrayImpl() {
 		puntuaciones = new ArrayList<String>();
@@ -28,7 +29,7 @@ public class AlmacenPuntuacionesArrayImpl implements AlmacenPuntuaciones {
 	}
 
 	@Override
-	public ArrayList<String> listaPuntuaciones(int cantidad) {
+	public List<String> listaPuntuaciones(int cantidad) {
 		return puntuaciones;
 	}
 }
