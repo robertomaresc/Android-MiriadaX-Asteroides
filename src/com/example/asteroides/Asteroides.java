@@ -102,9 +102,9 @@ public class Asteroides extends Activity {
 
 	private AlmacenPuntuaciones crearAlmacenPuntuaciones() {
 		AlmacenPuntuaciones almacen = null;
-		almacen = new AlmacenPuntuacionesArrayImpl();
+		// almacen = new AlmacenPuntuacionesArrayImpl();
 		almacen = new AlmacenPuntuacionesPreferencesImpl(this);
-		almacen = new AlmacenPuntuacionesFicheroInternoImpl(this);
+		// almacen = new AlmacenPuntuacionesFicheroInternoImpl(this);
 		return almacen;
 	}
 
