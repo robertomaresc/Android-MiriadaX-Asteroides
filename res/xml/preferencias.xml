@@ -13,6 +13,14 @@
         android:key="graficos"
         android:summary="Se escoge la representación de gráficos"
         android:title="Tipo de gráficos" />
+    
+    <ListPreference 
+        android:defaultValue="1"
+        android:entries="@array/tiposAlmacenamientos"
+        android:entryValues="@array/tiposAlmacenamientosValores"
+        android:key="almacenamiento"
+        android:summary="Se escoge el tipo de almacenamiento para las puntuaciones"
+        android:title="Tipo de almacenamiento" />
 
     <EditTextPreference
         android:defaultValue="3"
