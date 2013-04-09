@@ -2,7 +2,6 @@ package com.example.asteroides;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,15 +18,20 @@ import android.widget.Toast;
  * 
  */
 public class Asteroides extends Activity {
-	public static AlmacenPuntuaciones almacen = new AlmacenPuntuacionesArrayImpl();
-	private static final String VAR_ESTADO__POSICION_MUSICA = "posicionMusica";
+	public static AlmacenPuntuaciones almacen;
+	// private static final String VAR_ESTADO__POSICION_MUSICA =
+	// "posicionMusica";
+	public static final int PUNTUACION_REQUEST_CODE = 1234;
 	private Button btnAcercaDe;
 	private Button btnSalir;
 	private Button btnConfigurar;
 	private Button btnPuntuaciones;
 	private Button btnJugar;
-	private MediaPlayer mp;
 
+	/*
+	 * Modulo 8: Sustituimos el MediaPlayer por ServicioMusica
+	 */
+	// private MediaPlayer mp;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -85,12 +89,32 @@ public class Asteroides extends Activity {
 				finish();
 			}
 		});
-		mp = MediaPlayer.create(this, R.raw.audio);
+		/*
+		 * Modulo 8: Sustituimos el MediaPlayer por ServicioMusica
+		 */
+		// mp = MediaPlayer.create(this, R.raw.audio);
+		/*
+		 * Modulo 9: Uso de distintas implementaciones para el
+		 * AlmacenPuntuaciones
+		 */
+		almacen = crearAlmacenPuntuaciones();
+	}
+
+	private AlmacenPuntuaciones crearAlmacenPuntuaciones() {
+		AlmacenPuntuaciones almacen = null;
+		almacen = new AlmacenPuntuacionesArrayImpl();
+		almacen = new AlmacenPuntuacionesPreferencesImpl(this);
+		almacen = new AlmacenPuntuacionesFicheroInternoImpl(this);
+		return almacen;
 	}
 
 	@Override
 	protected void onStart() {
 		super.onStart();
+		/*
+		 * Modulo 8: Sustituimos el MediaPlayer por un servicio de musica
+		 */
+		startService(new Intent(this, ServicioMusica.class));
 		Toast.makeText(this, "onStart", Toast.LENGTH_SHORT).show();
 	}
 
@@ -98,7 +122,10 @@ public class Asteroides extends Activity {
 	protected void onResume() {
 		super.onResume();
 		Toast.makeText(this, "onResume", Toast.LENGTH_SHORT).show();
-		mp.start();
+		/*
+		 * Modulo 8: Sustituimos el MediaPlayer por ServicioMusica
+		 */
+		// mp.start();
 	}
 
 	@Override
@@ -117,7 +144,10 @@ public class Asteroides extends Activity {
 		/*
 		 * Cuando la actividad deje de estar visible el audio deje de escucharse
 		 */
-		mp.pause();
+		/*
+		 * Modulo 8: Sustituimos el MediaPlayer por ServicioMusica
+		 */
+		// mp.pause();
 		super.onStop();
 	}
 
@@ -130,6 +160,7 @@ public class Asteroides extends Activity {
 	@Override
 	protected void onDestroy() {
 		Toast.makeText(this, "onDestroy", Toast.LENGTH_SHORT).show();
+		stopService(new Intent(this, ServicioMusica.class));
 		super.onDestroy();
 	}
 
@@ -174,10 +205,13 @@ public class Asteroides extends Activity {
 	@Override
 	protected void onSaveInstanceState(Bundle estadoGuardado) {
 		super.onSaveInstanceState(estadoGuardado);
-		if (mp != null) {
-			int pos = mp.getCurrentPosition();
-			estadoGuardado.putInt(VAR_ESTADO__POSICION_MUSICA, pos);
-		}
+		/*
+		 * Modulo 8: Sustituimos el MediaPlayer por ServicioMusica
+		 */
+		// if (mp != null) {
+		// int pos = mp.getCurrentPosition();
+		// estadoGuardado.putInt(VAR_ESTADO__POSICION_MUSICA, pos);
+		// }
 	}
 
 	/**
@@ -187,10 +221,13 @@ public class Asteroides extends Activity {
 	@Override
 	protected void onRestoreInstanceState(Bundle estadoGuardado) {
 		super.onRestoreInstanceState(estadoGuardado);
-		if (estadoGuardado != null && mp != null) {
-			int pos = estadoGuardado.getInt(VAR_ESTADO__POSICION_MUSICA);
-			mp.seekTo(pos);
-		}
+		/*
+		 * Modulo 8: Sustituimos el MediaPlayer por ServicioMusica
+		 */
+		// if (estadoGuardado != null && mp != null) {
+		// int pos = estadoGuardado.getInt(VAR_ESTADO__POSICION_MUSICA);
+		// mp.seekTo(pos);
+		// }
 	}
 
 	private void lanzarAcercaDe(View view) {
@@ -210,6 +247,25 @@ public class Asteroides extends Activity {
 
 	public void lanzarJuego(View view) {
 		Intent i = new Intent(this, Juego.class);
-		startActivity(i);
+		/*
+		 * Modulo 9
+		 */
+		// startActivity(i);
+		startActivityForResult(i, 1234);
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if (requestCode == PUNTUACION_REQUEST_CODE & resultCode == RESULT_OK
+				& data != null) {
+			int puntuacion = data.getExtras().getInt("puntuacion");
+			String nombre = "Yo";
+			// Mejor leerlo desde un Dialog o una nueva actividad
+			// //AlertDialog.Builder
+			almacen.guardarPuntuacion(puntuacion, nombre,
+					System.currentTimeMillis());
+			lanzarPuntuaciones(null);
+		}
 	}
 }
