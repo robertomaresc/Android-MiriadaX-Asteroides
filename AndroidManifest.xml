@@ -8,6 +8,9 @@
         android:minSdkVersion="7"
         android:targetSdkVersion="17" />
 
+    <!-- Pedimos permiso para leer el estado del telefono -->
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
@@ -15,7 +18,8 @@
         android:theme="@style/TemaAsteroides" >
         <activity
             android:name="com.example.asteroides.Asteroides"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:launchMode="singleTask" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -43,6 +47,17 @@
             android:screenOrientation="landscape"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
         </activity>
+        
+        <!-- Declaramos servicio de Musica -->
+        <service android:name=".ServicioMusica" />
+        
+        <!-- Registramos receptor de notificaciones SMS -->
+        <receiver android:name=".ReceptorSMS" >
+            <intent-filter>
+                <action android:name="android.provider.Telephony.SMS_RECEIVED" />
+            </intent-filter>
+        </receiver>
+        
     </application>
 
 </manifest>
