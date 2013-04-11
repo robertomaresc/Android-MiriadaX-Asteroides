@@ -41,7 +41,7 @@ public class AlmacenPuntuacionesFactory {
 			almacen = new AlmacenPuntuacionesFicheroInternoImpl(context);
 			break;
 		case FICHERO_EXTERNO:
-			almacen = new AlmacenPuntuacionesFicheroExternoImpl();
+			almacen = new AlmacenPuntuacionesFicheroExternoImpl(context);
 			break;
 		default:
 			// ARRAY

@@ -10,8 +10,10 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.content.Context;
 import android.os.Environment;
 import android.util.Log;
+import android.widget.Toast;
 
 /**
  * Implementacin utilizando un fichero externo, normalmente
@@ -27,6 +29,11 @@ public class AlmacenPuntuacionesFicheroExternoImpl implements
 		AlmacenPuntuaciones {
 	private static String FICHERO = Environment.getExternalStorageDirectory()
 			+ "/puntuaciones.txt";
+	private final Context context;
+
+	public AlmacenPuntuacionesFicheroExternoImpl(Context context) {
+		this.context = context;
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -36,13 +43,22 @@ public class AlmacenPuntuacionesFicheroExternoImpl implements
 	 */
 	@Override
 	public void guardarPuntuacion(int puntos, String nombre, long fecha) {
-		try {
-			FileOutputStream f = new FileOutputStream(FICHERO, true);
-			String texto = puntos + " " + nombre + "\n";
-			f.write(texto.getBytes());
-			f.close();
-		} catch (Exception e) {
-			Log.e("Asteroides", e.getMessage(), e);
+		/*
+		 * Comprobamos el estado de la Memoria externa
+		 */
+		String estadoSD = Environment.getExternalStorageState();
+		if (!estadoSD.equals(Environment.MEDIA_MOUNTED)) {
+			Toast.makeText(context, "No puedo escribir en la memoria externa",
+					Toast.LENGTH_LONG).show();
+		} else {
+			try {
+				FileOutputStream f = new FileOutputStream(FICHERO, true);
+				String texto = puntos + " " + nombre + "\n";
+				f.write(texto.getBytes());
+				f.close();
+			} catch (Exception e) {
+				Log.e("Asteroides", e.getMessage(), e);
+			}
 		}
 	}
 
@@ -54,22 +70,32 @@ public class AlmacenPuntuacionesFicheroExternoImpl implements
 	@Override
 	public List<String> listaPuntuaciones(int cantidad) {
 		List<String> result = new ArrayList<String>();
-		try {
-			FileInputStream f = new FileInputStream(FICHERO);
-			BufferedReader entrada = new BufferedReader(
-					new InputStreamReader(f));
-			int n = 0;
-			String linea;
-			do {
-				linea = entrada.readLine();
-				if (linea != null) {
-					result.add(linea);
-					n++;
-				}
-			} while (n < cantidad && linea != null);
-			f.close();
-		} catch (Exception e) {
-			Log.e("Asteroides", e.getMessage(), e);
+		/*
+		 * Comprobamos el estado de la Memoria externa
+		 */
+		String estadoSD = Environment.getExternalStorageState();
+		if (!estadoSD.equals(Environment.MEDIA_MOUNTED)
+				&& !estadoSD.equals(Environment.MEDIA_MOUNTED_READ_ONLY)) {
+			Toast.makeText(context, "No puedo leer en la memoria externa",
+					Toast.LENGTH_LONG).show();
+		} else {
+			try {
+				FileInputStream f = new FileInputStream(FICHERO);
+				BufferedReader entrada = new BufferedReader(
+						new InputStreamReader(f));
+				int n = 0;
+				String linea;
+				do {
+					linea = entrada.readLine();
+					if (linea != null) {
+						result.add(linea);
+						n++;
+					}
+				} while (n < cantidad && linea != null);
+				f.close();
+			} catch (Exception e) {
+				Log.e("Asteroides", e.getMessage(), e);
+			}
 		}
 		return result;
 	}
