@@ -9,6 +9,11 @@ package com.example.asteroides;
 
 public final class R {
     public static final class array {
+        /**  Tipos Almacenamiento Puntuaciones 
+ Tipos Almacenamiento Puntuaciones 
+         */
+        public static final int tiposAlmacenamientos=0x7f060002;
+        public static final int tiposAlmacenamientosValores=0x7f060003;
         public static final int tiposGraficos=0x7f060000;
         public static final int tiposGraficosValores=0x7f060001;
     }

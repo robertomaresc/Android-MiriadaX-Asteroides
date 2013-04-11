@@ -15,13 +15,15 @@
     <!-- Tipos Almacenamiento Puntuaciones -->
     <string-array name="tiposAlmacenamientos">
         <item>Array</item>
-        <item>Preferencias</item>
-        <item>Fichero en memoria interna</item>
+        <item>Preferences</item>
+        <item>Internal memory file</item>
+        <item>External memory file</item>
     </string-array>
     <string-array name="tiposAlmacenamientosValores">
         <item>0</item>
         <item>1</item>
         <item>2</item>
+        <item>3</item>
     </string-array>
 
 </resources>

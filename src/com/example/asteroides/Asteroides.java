@@ -2,6 +2,7 @@ package com.example.asteroides;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -10,6 +11,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.Toast;
+
+import com.example.asteroides.AlmacenPuntuacionesFactory.TipoAlmacenamiento;
 
 /**
  * Pantalla principal de la aplicacion Asteroides
@@ -97,15 +100,11 @@ public class Asteroides extends Activity {
 		 * Modulo 9: Uso de distintas implementaciones para el
 		 * AlmacenPuntuaciones
 		 */
-		almacen = crearAlmacenPuntuaciones();
-	}
-
-	private AlmacenPuntuaciones crearAlmacenPuntuaciones() {
-		AlmacenPuntuaciones almacen = null;
-		// almacen = new AlmacenPuntuacionesArrayImpl();
-		// almacen = new AlmacenPuntuacionesPreferencesImpl(this);
-		almacen = new AlmacenPuntuacionesFicheroInternoImpl(this);
-		return almacen;
+		SharedPreferences preferencias = getPreferences(MODE_PRIVATE);
+		int tipoAlmacenamiento = preferencias.getInt("tiposAlmacenamientos", 0);
+		almacen = AlmacenPuntuacionesFactory.getInstance(this)
+				.crearAlmacenPuntuaciones(
+						TipoAlmacenamiento.values()[tipoAlmacenamiento]);
 	}
 
 	@Override

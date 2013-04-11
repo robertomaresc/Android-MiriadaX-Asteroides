@@ -11,6 +11,9 @@
     <!-- Pedimos permiso para leer el estado del telefono -->
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
 
+    <!-- Pedimos permiso para utilizar archivos en memoria externa (SDCard) -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
@@ -47,17 +50,16 @@
             android:screenOrientation="landscape"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
         </activity>
-        
+
         <!-- Declaramos servicio de Musica -->
         <service android:name=".ServicioMusica" />
-        
+
         <!-- Registramos receptor de notificaciones SMS -->
         <receiver android:name=".ReceptorSMS" >
             <intent-filter>
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
             </intent-filter>
         </receiver>
-        
     </application>
 
 </manifest>
