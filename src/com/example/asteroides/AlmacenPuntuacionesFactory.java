@@ -13,7 +13,7 @@ import android.content.Context;
  */
 public class AlmacenPuntuacionesFactory {
 	public enum TipoAlmacenamiento {
-		ARRAY, PREFERENCIAS, FICHERO_INTERNO, FICHERO_EXTERNO
+		ARRAY, PREFERENCIAS, FICHERO_INTERNO, FICHERO_EXTERNO, FICHERO_XML_SAX
 	};
 
 	private static AlmacenPuntuacionesFactory instance;
@@ -42,6 +42,9 @@ public class AlmacenPuntuacionesFactory {
 			break;
 		case FICHERO_EXTERNO:
 			almacen = new AlmacenPuntuacionesFicheroExternoImpl(context);
+			break;
+		case FICHERO_XML_SAX:
+			almacen = new AlmacenPuntuacionesXML_SAXImpl(context);
 			break;
 		default:
 			// ARRAY

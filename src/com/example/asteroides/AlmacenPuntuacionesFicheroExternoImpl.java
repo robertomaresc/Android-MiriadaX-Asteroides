@@ -21,6 +21,9 @@ import android.widget.Toast;
  * <p>
  * Siempre es mejor utilizar
  * <code>Enviroment.getExternalStorageDirectory()</code>
+ * <p>
+ * Crearlo en la carpeta /sdcard/Android/data/…/files/. Aunque solo se eliminará
+ * si la aplicación se instala en un dispositivo con versión 2.2 o superior.
  * 
  * @author robertome
  * 
