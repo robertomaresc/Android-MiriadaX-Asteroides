@@ -90,9 +90,16 @@ public class AlmacenPuntuacionesSQLiteImpl extends SQLiteOpenHelper implements
 		SQLiteDatabase db = getReadableDatabase();
 		// Cursor cursor = db.rawQuery("SELECT puntos, nombre FROM "
 		// + "puntuaciones ORDER BY puntos DESC LIMIT " + cantidad, null);
-		Cursor cursor = db.rawQuery("SELECT " + Columns.PUNTOS + ", "
-				+ Columns.NOMBRE + " FROM " + TABLE_NAME + " ORDER BY "
-				+ Columns.PUNTOS + " DESC LIMIT " + cantidad, null);
+		/*
+		 * Ejercicio paso a paso: Utilización del método query() para guardar
+		 * puntuaciones
+		 */
+		// Cursor cursor = db.rawQuery("SELECT " + Columns.PUNTOS + ", "
+		// + Columns.NOMBRE + " FROM " + TABLE_NAME + " ORDER BY "
+		// + Columns.PUNTOS + " DESC LIMIT " + cantidad, null);
+		String[] CAMPOS = { Columns.PUNTOS, Columns.NOMBRE };
+		Cursor cursor = db.query(TABLE_NAME, CAMPOS, null, null, null, null,
+				Columns.PUNTOS + " DESC", Integer.toString(cantidad));
 		while (cursor.moveToNext()) {
 			result.add(cursor.getInt(0) + " " + cursor.getString(1));
 		}
