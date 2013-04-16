@@ -18,12 +18,14 @@
         <item>Preferences</item>
         <item>Internal memory file</item>
         <item>External memory file</item>
+        <item>XML file</item>
     </string-array>
     <string-array name="tiposAlmacenamientosValores">
         <item>0</item>
         <item>1</item>
         <item>2</item>
         <item>3</item>
+        <item>4</item>
     </string-array>
 
 </resources>
