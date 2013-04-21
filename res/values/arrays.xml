@@ -20,6 +20,7 @@
         <item>Fichero en memoria externa</item>
         <item>Fichero XML</item>
         <item>Base de datos SQLite</item>
+        <item>Servidor de Puntuaciones</item>
     </string-array>
     <string-array name="tiposAlmacenamientosValores">
         <item>0</item>
@@ -28,6 +29,7 @@
         <item>3</item>
         <item>4</item>
         <item>5</item>
+        <item>6</item>
     </string-array>
 
 </resources>

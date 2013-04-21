@@ -20,6 +20,7 @@
         <item>External memory file</item>
         <item>XML file</item>
         <item>SQLite database</item>
+        <item>Score Server</item>
     </string-array>
     <string-array name="tiposAlmacenamientosValores">
         <item>0</item>
@@ -28,6 +29,7 @@
         <item>3</item>
         <item>4</item>
         <item>5</item>
+        <item>6</item>
     </string-array>
 
 </resources>

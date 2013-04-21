@@ -13,7 +13,7 @@ import android.content.Context;
  */
 public class AlmacenPuntuacionesFactory {
 	public enum TipoAlmacenamiento {
-		ARRAY, PREFERENCIAS, FICHERO_INTERNO, FICHERO_EXTERNO, FICHERO_XML_SAX, BASE_DATOS
+		ARRAY, PREFERENCIAS, FICHERO_INTERNO, FICHERO_EXTERNO, FICHERO_XML_SAX, BASE_DATOS, SERVIDOR_PUNTUACIONES
 	};
 
 	private static AlmacenPuntuacionesFactory instance;
@@ -48,6 +48,9 @@ public class AlmacenPuntuacionesFactory {
 			break;
 		case BASE_DATOS:
 			almacen = new AlmacenPuntuacionesSQLiteImpl(context);
+			break;
+		case SERVIDOR_PUNTUACIONES:
+			almacen = new AlmacenPuntuacionesSocketImpl();
 			break;
 		default:
 			// ARRAY
